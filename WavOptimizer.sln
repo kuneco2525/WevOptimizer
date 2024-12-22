@@ -1,0 +1,21 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WavOptimizer", "WavOptimizer.csproj", "{87FA7352-5E35-4AD0-AE38-97D64192DCD2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{87FA7352-5E35-4AD0-AE38-97D64192DCD2}.Debug|x64.ActiveCfg = Debug|x64
+		{87FA7352-5E35-4AD0-AE38-97D64192DCD2}.Debug|x64.Build.0 = Debug|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1693D2C1-9EB1-46D5-A0C5-D298EA1EE7AE}
+	EndGlobalSection
+EndGlobal
