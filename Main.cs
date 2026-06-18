@@ -2,9 +2,14 @@ using System.Text.RegularExpressions;
 
 namespace WavOptimizer;
 
-internal class Main : Form {
+internal partial class Main : Form {
+	[GeneratedRegex(@"^.+[\\/][^\\/]+\.[Ww][Aa][Vv]$")]
+	private static partial Regex cfile();
+	[GeneratedRegex(@"^.+[\\/]$")]
+	private static partial Regex cdir();
+
 	private const ulong TrimVol = 1;
-	private static readonly Regex FILE = new(@"^.+[\\/][^\\/]+\.[Ww][Aa][Vv]$"), DIR = new(@"^.+[\\/]$");
+	private static readonly Regex FILE = cfile(), DIR = cdir();
 	private static readonly Dictionary<int, ulong> BITMAX = new([new(1, -sbyte.MinValue), new(2, -short.MinValue), new(3, -Int24.MinValue), new(4, -(long)int.MinValue)]);
 
 	private static readonly List<WavFile> FILES = [];
@@ -524,7 +529,6 @@ internal class Main : Form {
 					for(ushort c = 0; c < f.Peak.Length; ++c) { if(f.Peak[c] > TrimVol) { ++ch; } }
 					f.Header.Channels = ch;
 				}
-				//if(chk[3]) { f.Header.Bit = f.Peak.Max() switch { <= -sbyte.MinValue => 8, <= -short.MinValue => 16, <= -Int24.MinValue => 24, <= -(long)int.MinValue => 32, _ => 64 }; }
 				if(chk[3]) { f.Header.Bit = f.Peak.Max() switch { <= -short.MinValue => 16, <= -Int24.MinValue => 24, <= -(long)int.MinValue => 32, _ => 64 }; }
 				f.Header.BlockSize = (ushort)(f.Header.Bit / 8 * f.Header.Channels);
 				f.Header.BytePerSec = f.Header.BlockSize * f.Header.SampleRate;
@@ -543,9 +547,10 @@ internal class Main : Form {
 						v[c] = BytesToInt(b);
 						if(Abs(v[c]) <= TrimVol) { ++e[c]; } else { e[c] = 0; }
 					}
-					if(chk[2] && e.Min() > post) { continue; }
+					long emin = e.Min();
+					if(chk[2] && (emin > post || emin == i)) continue;
 					for(ushort c = 0; c < h.Channels; ++c) {
-						if(chk[1] && f.Peak[c] <= TrimVol) { continue; }
+						if(chk[1] && f.Peak[c] <= TrimVol) continue;
 						r.Write(IntToBytes(v[c], block));
 						f.WriteSize += block;
 					}
